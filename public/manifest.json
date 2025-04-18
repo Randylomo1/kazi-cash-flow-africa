@@ -1,0 +1,59 @@
+
+{
+  "name": "KaziCash - Africa's Digital Work Wallet",
+  "short_name": "KaziCash",
+  "description": "Fintech superapp for Africa's informal and gig workers with M-Pesa payments, microloans, and trust profiles",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#223866",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "orientation": "portrait",
+  "categories": ["finance", "productivity", "business"],
+  "shortcuts": [
+    {
+      "name": "Find Jobs",
+      "short_name": "Jobs",
+      "description": "Browse jobs near you",
+      "url": "/jobs",
+      "icons": [{ "src": "/shortcuts/jobs.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Cash Out",
+      "short_name": "Cash Out",
+      "description": "Transfer to M-Pesa",
+      "url": "/wallet",
+      "icons": [{ "src": "/shortcuts/wallet.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
+    },
+    {
+      "src": "/screenshots/jobs.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
+    },
+    {
+      "src": "/screenshots/wallet.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
+    }
+  ]
+}
