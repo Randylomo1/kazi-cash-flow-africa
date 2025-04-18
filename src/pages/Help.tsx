@@ -1,8 +1,8 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { 
-  ArrowLeft, Search, ChevronDown, ChevronUp, MessageCircle, Phone, Mail
+  ArrowLeft, Search, ChevronDown, ChevronUp, MessageCircle, Phone, Mail,
+  ChevronRight
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,6 @@ const Help = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   
-  // FAQ categories and questions
   const faqCategories = [
     {
       title: "Account & Profile",
@@ -89,8 +88,7 @@ const Help = () => {
       ]
     }
   ];
-  
-  // Filter questions based on search query
+
   const filteredFaq = searchQuery 
     ? faqCategories.map(category => ({
         ...category,
@@ -121,7 +119,6 @@ const Help = () => {
         transition={{ duration: 0.3 }}
         className="space-y-6"
       >
-        {/* Search */}
         <div className="relative mb-6">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
           <Input 
@@ -132,7 +129,6 @@ const Help = () => {
           />
         </div>
 
-        {/* Quick Help */}
         {!searchQuery && (
           <div className="grid grid-cols-3 gap-3 mb-6">
             {[
@@ -154,7 +150,6 @@ const Help = () => {
           </div>
         )}
 
-        {/* FAQ Categories */}
         <div className="space-y-4">
           {filteredFaq.length > 0 ? (
             filteredFaq.map((category, index) => (
@@ -188,7 +183,6 @@ const Help = () => {
           )}
         </div>
 
-        {/* Contact Support */}
         <div className="kazi-card bg-gradient-to-br from-kazi-blue to-indigo-900 text-white">
           <h3 className="font-semibold mb-2">Still Need Help?</h3>
           <p className="text-white/80 mb-4">
@@ -203,7 +197,6 @@ const Help = () => {
           </Button>
         </div>
 
-        {/* Related Links */}
         <div className="mt-4 pt-4 border-t border-border">
           <h3 className="font-semibold mb-3">Related Links</h3>
           <div className="space-y-2">

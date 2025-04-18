@@ -1,27 +1,24 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const Splash = () => {
   const navigate = useNavigate();
+  const [buttonVisible, setButtonVisible] = useState(false);
 
-  // After 3 seconds, show the get started button
+  // After 2 seconds, show the get started button
   useEffect(() => {
     const timer = setTimeout(() => {
-      const getStartedBtn = document.getElementById("get-started-btn");
-      if (getStartedBtn) {
-        getStartedBtn.classList.remove("opacity-0");
-        getStartedBtn.classList.add("opacity-100");
-      }
-    }, 3000);
+      setButtonVisible(true);
+    }, 2000);
     
     return () => clearTimeout(timer);
   }, []);
 
   const handleGetStarted = () => {
-    // Set the flag and navigate to onboarding
+    // Set the flag that the user has visited
     localStorage.setItem('hasVisitedKaziCash', 'true');
     navigate('/onboarding');
   };
@@ -75,14 +72,13 @@ const Splash = () => {
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
+        animate={{ opacity: buttonVisible ? 1 : 0, y: buttonVisible ? 0 : 20 }}
+        transition={{ duration: 0.5 }}
         className="mt-12"
       >
         <Button
-          id="get-started-btn"
           onClick={handleGetStarted}
-          className="kazi-button kazi-button-primary bg-kazi-orange hover:bg-kazi-orange/90 text-white px-8 py-6 text-lg opacity-0 transition-opacity duration-500"
+          className="kazi-button kazi-button-primary bg-kazi-orange hover:bg-kazi-orange/90 text-white px-8 py-6 text-lg"
         >
           Get Started
         </Button>

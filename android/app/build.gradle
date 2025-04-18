@@ -36,6 +36,24 @@ android {
     buildFeatures {
         viewBinding true
     }
+    
+    // For React-based web app, we need to disable resource shrinking
+    aaptOptions {
+        noCompress "tflite"
+    }
+    
+    // Fix for duplicate classes error
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+    }
 }
 
 dependencies {
@@ -50,6 +68,12 @@ dependencies {
     
     // Splash screen API
     implementation 'androidx.core:core-splashscreen:1.0.0'
+    
+    // For online/offline detection
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+    
+    // For permission handling
+    implementation 'com.guolindev.permissionx:permissionx:1.7.1'
     
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

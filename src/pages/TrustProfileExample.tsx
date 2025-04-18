@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useApp } from "@/context/AppContext";
 import TrustScoreMeter from "@/components/TrustScoreMeter";
-import { QRCodeModal } from "@/components/QRCodeModal";
-import { BadgeDetailModal } from "@/components/BadgeDetailModal";
+import QRCodeModal from "@/components/QRCodeModal";
+import BadgeDetailModal from "@/components/BadgeDetailModal";
 
 const TrustProfileExample = () => {
   const { user } = useApp();
@@ -23,7 +22,6 @@ const TrustProfileExample = () => {
   const [showBadgeModal, setShowBadgeModal] = useState(false);
   const [selectedBadge, setSelectedBadge] = useState<any>(null);
   
-  // Mock data
   const completedJobs = [
     {
       id: "job-1",
@@ -125,7 +123,6 @@ const TrustProfileExample = () => {
         <p className="text-muted-foreground">Build and manage your reputation</p>
       </div>
 
-      {/* Main Profile Card */}
       <motion.div 
         className="kazi-card bg-card mb-6"
         initial={{ opacity: 0, y: 20 }}
@@ -198,7 +195,6 @@ const TrustProfileExample = () => {
           <TabsTrigger value="activity" className="flex-1">Activity</TabsTrigger>
         </TabsList>
         
-        {/* Work History Tab */}
         <TabsContent value="history" className="mt-0 space-y-4">
           <div className="flex justify-between items-center">
             <h3 className="font-semibold">{user?.completedJobs || 0} Jobs Completed</h3>
@@ -258,7 +254,6 @@ const TrustProfileExample = () => {
           ))}
         </TabsContent>
         
-        {/* Badges Tab */}
         <TabsContent value="badges" className="mt-0">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">{badges.length} Badges Earned</h3>
@@ -295,7 +290,6 @@ const TrustProfileExample = () => {
           </div>
         </TabsContent>
         
-        {/* Activity Tab */}
         <TabsContent value="activity" className="mt-0">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">Recent Activity</h3>
@@ -321,7 +315,6 @@ const TrustProfileExample = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Skills Section */}
       <motion.div 
         className="kazi-card bg-card mb-6"
         initial={{ opacity: 0, y: 20 }}
@@ -369,7 +362,6 @@ const TrustProfileExample = () => {
         </div>
       </motion.div>
 
-      {/* Contact Info */}
       <motion.div 
         className="kazi-card bg-card mb-6"
         initial={{ opacity: 0, y: 20 }}
@@ -390,7 +382,6 @@ const TrustProfileExample = () => {
         </div>
       </motion.div>
 
-      {/* Rate Recent Client */}
       <motion.div 
         className="kazi-card bg-gradient-to-br from-kazi-blue to-indigo-900 text-white mb-6"
         initial={{ opacity: 0, y: 20 }}
@@ -436,7 +427,6 @@ const TrustProfileExample = () => {
         </Button>
       </motion.div>
 
-      {/* Verification Documents */}
       <motion.div 
         className="kazi-card bg-card mb-6"
         initial={{ opacity: 0, y: 20 }}
@@ -475,7 +465,6 @@ const TrustProfileExample = () => {
         </div>
       </motion.div>
 
-      {/* QR Code Modal */}
       <QRCodeModal
         isOpen={showQRModal}
         onClose={() => setShowQRModal(false)}
@@ -486,7 +475,6 @@ const TrustProfileExample = () => {
         }}
       />
 
-      {/* Badge Detail Modal */}
       {selectedBadge && (
         <BadgeDetailModal
           isOpen={showBadgeModal}
