@@ -49,6 +49,15 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* KaziCash Custom Colors */
+    --kazi-blue: 223 86 102;      /* #223866 */
+    --kazi-orange: 245 124 0;     /* #F57C00 */
+    --kazi-green: 46 125 50;      /* #2E7D32 */
+    --kazi-beige: 245 242 235;    /* #F5F2EB */
+    --kazi-grey: 58 58 58;        /* #3A3A3A */
+    --kazi-purple: 106 27 154;    /* #6A1B9A */
+    --kazi-red: 211 47 47;        /* #D32F2F */
   }
 
   .dark {
@@ -97,5 +106,35 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .kazi-card {
+    @apply rounded-2xl p-4 shadow-lg transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .kazi-button {
+    @apply rounded-xl px-4 py-2 transition-all duration-200 active:scale-95;
+  }
+
+  .kazi-button-primary {
+    @apply bg-kazi-blue text-white hover:bg-kazi-blue/90;
+  }
+
+  .kazi-button-secondary {
+    @apply bg-white text-kazi-blue border border-kazi-blue/20 hover:bg-kazi-blue/5;
+  }
+
+  .trust-badge {
+    @apply bg-kazi-purple/10 text-kazi-purple px-2 py-0.5 rounded-full text-xs;
+  }
+
+  .progress-bar {
+    @apply h-2 bg-muted rounded-full overflow-hidden;
+  }
+
+  .progress-bar-fill {
+    @apply h-full transition-all duration-500 ease-out;
   }
 }

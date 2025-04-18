@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -84,21 +83,19 @@ const CustomerSupport = ({ isOpen, onClose }: CustomerSupportProps) => {
   const toggleTextToSpeech = () => {
     setIsSpeaking(!isSpeaking);
     
-    // In a real implementation, this would use the Web Speech API
-    // or a third-party service to read out the last message
     if (!isSpeaking) {
-      const lastBotMessage = messages.findLast(msg => msg.sender === "bot");
-      if (lastBotMessage) {
-        if ('speechSynthesis' in window) {
-          const utterance = new SpeechSynthesisUtterance(lastBotMessage.text);
-          utterance.lang = 'en-US';
-          speechSynthesis.speak(utterance);
-        }
+      // Find the last bot message using reverse find instead of findLast
+      const lastBotMessage = [...messages]
+        .reverse()
+        .find(msg => msg.sender === "bot");
+      
+      if (lastBotMessage && 'speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(lastBotMessage.text);
+        utterance.lang = 'en-US';
+        speechSynthesis.speak(utterance);
       }
-    } else {
-      if ('speechSynthesis' in window) {
-        speechSynthesis.cancel();
-      }
+    } else if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
     }
   };
 

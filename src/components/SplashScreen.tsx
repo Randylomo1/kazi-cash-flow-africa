@@ -26,7 +26,7 @@ const SplashScreen = () => {
 
   return (
     <motion.div 
-      className="fixed inset-0 bg-gradient-to-b from-kazi-blue to-blue-800 z-50 flex flex-col items-center justify-center p-6"
+      className="fixed inset-0 bg-gradient-to-b from-[#223866] to-blue-800 z-50 flex flex-col items-center justify-center p-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -49,7 +49,7 @@ const SplashScreen = () => {
             repeatType: "reverse" 
           }}
         >
-          <div className="text-kazi-blue text-3xl font-bold">K</div>
+          <div className="text-[#223866] text-3xl font-bold">K</div>
         </motion.div>
         
         <motion.h1 
@@ -58,7 +58,7 @@ const SplashScreen = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5 }}
         >
-          Kazi<span className="text-kazi-orange">Cash</span>
+          Kazi<span className="text-[#F57C00]">Cash</span>
         </motion.h1>
         
         <motion.p 
@@ -84,38 +84,39 @@ const SplashScreen = () => {
         </div>
         <p className="text-white/60 text-sm">Connecting you to opportunities</p>
       </motion.div>
-      
-      {/* CSS for animated dots */}
-      <style jsx>{`
-        .dot-loader {
-          display: flex;
-          gap: 6px;
-        }
-        .dot {
-          width: 8px;
-          height: 8px;
-          background-color: white;
-          border-radius: 50%;
-          opacity: 0.6;
-          animation: pulse 1.5s infinite ease-in-out;
-        }
-        .dot:nth-child(2) {
-          animation-delay: 0.2s;
-        }
-        .dot:nth-child(3) {
-          animation-delay: 0.4s;
-        }
-        @keyframes pulse {
-          0%, 100% {
-            transform: scale(0.8);
+
+      <style>
+        {`
+          .dot-loader {
+            display: flex;
+            gap: 6px;
+          }
+          .dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
             opacity: 0.6;
+            animation: pulse 1.5s infinite ease-in-out;
           }
-          50% {
-            transform: scale(1.2);
-            opacity: 1;
+          .dot:nth-child(2) {
+            animation-delay: 0.2s;
           }
-        }
-      `}</style>
+          .dot:nth-child(3) {
+            animation-delay: 0.4s;
+          }
+          @keyframes pulse {
+            0%, 100% {
+              transform: scale(0.8);
+              opacity: 0.6;
+            }
+            50% {
+              transform: scale(1.2);
+              opacity: 1;
+            }
+          }
+        `}
+      </style>
     </motion.div>
   );
 };
