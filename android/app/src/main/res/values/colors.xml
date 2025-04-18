@@ -1,0 +1,15 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="kaziBluePrimary">#223866</color>
+    <color name="kaziBlueDark">#152240</color>
+    <color name="kaziOrange">#F57C00</color>
+    <color name="kaziGreen">#2E7D32</color>
+    <color name="kaziBeige">#F5F2EB</color>
+    <color name="kaziGrey">#3A3A3A</color>
+    <color name="kaziPurple">#6A1B9A</color>
+    <color name="kaziRed">#D32F2F</color>
+    <color name="background">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>

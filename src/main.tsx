@@ -4,13 +4,12 @@ import App from './App.tsx'
 import './index.css'
 import { registerServiceWorker } from './registerServiceWorker'
 
-// First-time visit redirect to onboarding
+// First-time visit redirect to splash screen
 const checkFirstVisit = () => {
   const hasVisited = localStorage.getItem('hasVisitedKaziCash');
   
-  if (!hasVisited && !window.location.pathname.includes('onboarding')) {
-    window.location.href = '/onboarding';
-    localStorage.setItem('hasVisitedKaziCash', 'true');
+  if (!hasVisited && !window.location.pathname.includes('onboarding') && !window.location.pathname.includes('splash')) {
+    window.location.href = '/';
   }
 };
 

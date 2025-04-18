@@ -1,73 +1,87 @@
-# Welcome to your Lovable project
 
-## Project info
+# KaziCash - Mobile-First Fintech App for African Gig Workers
 
-**URL**: https://lovable.dev/projects/0deeb239-551d-41fe-b177-1bcf48c6b793
+KaziCash is a mobile-first fintech superapp designed for Africa's informal and gig workers. The app provides instant M-Pesa payments, work-based microloans, trust profiles, offline functionality, and smart AI features including a chatbot, speech-to-text, and dynamic credit scoring.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **User Authentication**: Secure login with phone number + OTP
+- **Home Dashboard**: Today's earnings, trust score meter, job suggestions feed
+- **Job Center**: Map/list toggle for job browsing, filtering by pay/type/trust level
+- **KaziWallet**: Total balance, M-Pesa integration, offline payment sync
+- **Work-Based Credit**: Loan simulator, trust-based eligibility
+- **Trust Profile**: Star ratings, badges, completed job history
+- **Offline Mode**: Working offline banner, local job caching
+- **AI Features**: Chatbot, speech-to-text, AI credit score engine
+- **Multi-language Support**: English, Swahili, French
 
-**Use Lovable**
+## Installation on Android Studio
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/0deeb239-551d-41fe-b177-1bcf48c6b793) and start prompting.
+### Prerequisites
 
-Changes made via Lovable will be committed automatically to this repo.
+- Android Studio (latest stable version)
+- Java Development Kit (JDK) 8 or higher
+- Android SDK
 
-**Use your preferred IDE**
+### Steps to Import and Run
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. **Clone the repository**
+   ```
+   git clone https://github.com/yourusername/kazicash.git
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+2. **Open Android Studio**
+   - Select "Open an existing Android Studio project"
+   - Navigate to the cloned project folder and select the "android" directory
+   - Click "OK"
 
-Follow these steps:
+3. **Sync Gradle files**
+   - Android Studio will automatically sync the Gradle files
+   - If prompted, update Gradle plugin and dependencies
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+4. **Build the project**
+   - Select "Build" > "Make Project" (or press Ctrl+F9 / Cmd+F9)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+5. **Run the app**
+   - Select a virtual device or connect a physical device
+   - Click the "Run" button (the green triangle) or press Shift+F10 / Ctrl+R
 
-# Step 3: Install the necessary dependencies.
-npm i
+6. **For development**
+   - The web app source code is in the `src` directory
+   - Make changes to the React codebase
+   - Run `npm run build` to create a production build
+   - Copy the build files to `android/app/src/main/assets`
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+## Development
+
+### Web App Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+
+# Build for production
+npm run build
 ```
 
-**Edit a file directly in GitHub**
+### Building for Android
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Create a production build of the web app
+npm run build
 
-**Use GitHub Codespaces**
+# Copy the build to Android assets folder
+cp -r build/* android/app/src/main/assets/
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Open Android Studio and build the APK
+# Or use Gradle command line:
+cd android
+./gradlew assembleDebug
+```
 
-## What technologies are used for this project?
+## License
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/0deeb239-551d-41fe-b177-1bcf48c6b793) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This project is licensed under the MIT License - see the LICENSE file for details.

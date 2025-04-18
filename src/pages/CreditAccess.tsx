@@ -2,246 +2,278 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { 
-  DollarSign, Calendar, ArrowRight, CreditCard,
-  Shield, BadgeCheck, Clock, Info, AlertCircle
+  ChevronRight, Shield, Wallet, Clock, Info, 
+  AlertCircle, ArrowRight, Award, CheckCircle
 } from "lucide-react";
-import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import TrustScoreMeter from "@/components/TrustScoreMeter";
+import { Slider } from "@/components/ui/slider";
 import { useApp } from "@/context/AppContext";
+import TrustScoreMeter from "@/components/TrustScoreMeter";
 
 const CreditAccess = () => {
   const { user } = useApp();
-  const maxLoanAmount = user?.eligibleLoan || 3500;
+  const [loanAmount, setLoanAmount] = useState(1500);
+  const [loanTerm, setLoanTerm] = useState(30);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   
-  const [loanAmount, setLoanAmount] = useState(Math.floor(maxLoanAmount / 2));
-  const [loanTerm, setLoanTerm] = useState(14); // days
+  // Calculate max loan amount based on trust score
+  const maxLoanAmount = user?.trustScore ? Math.max(user.trustScore * 50, 500) : 500;
   
-  // Calculate repayment details
-  const interestRate = 0.05; // 5%
-  const interestAmount = loanAmount * interestRate;
-  const totalRepayment = loanAmount + interestAmount;
-  const weeklyPayment = Math.ceil(totalRepayment / (loanTerm / 7));
+  // Calculate interest rate based on trust score (lower score = higher interest)
+  const interestRate = user?.trustScore ? Math.max(15 - (user.trustScore / 10), 5) : 15;
+  
+  // Calculate repayment amount
+  const calculateRepayment = () => {
+    const interest = (loanAmount * (interestRate / 100) * (loanTerm / 30));
+    return Math.round(loanAmount + interest);
+  };
 
-  // Trust score bonus calculation
-  const trustBonus = Math.floor((user?.trustScore || 0) / 10) * 500;
-  
+  const handleLoanApplication = () => {
+    // In a real app, this would submit the loan application to a backend
+    setShowSuccessModal(true);
+    
+    // Auto-hide success modal after 3 seconds
+    setTimeout(() => {
+      setShowSuccessModal(false);
+    }, 3000);
+  };
+
   return (
     <div className="h-full">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-1">KaziCredit</h1>
-        <p className="text-muted-foreground">Quick loans based on your work history</p>
+        <h1 className="text-2xl font-bold mb-1">Credit Access</h1>
+        <p className="text-muted-foreground">Access short-term loans based on your work history</p>
       </div>
 
-      {/* Loan Simulator */}
+      {/* Trust Score Card */}
       <motion.div 
         className="kazi-card bg-card mb-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h2 className="font-semibold mb-4">Loan Simulator</h2>
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h3 className="font-semibold">Your Trust Score</h3>
+            <p className="text-sm text-muted-foreground">Determines your loan eligibility</p>
+          </div>
+          <Button variant="outline" size="sm" className="text-xs">
+            Improve Score
+          </Button>
+        </div>
         
-        {/* Loan Amount Slider */}
+        <div className="flex flex-col items-center pb-2">
+          <TrustScoreMeter score={user?.trustScore || 0} />
+          <p className="text-sm mt-3">
+            {user?.trustScore && user.trustScore >= 70 ? 
+              "Excellent! You qualify for maximum loan amount" : 
+              "Build your score to qualify for larger loans"}
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Loan Calculator Card */}
+      <motion.div 
+        className="kazi-card bg-card mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+      >
+        <h3 className="font-semibold mb-4">Loan Calculator</h3>
+        
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <label className="text-sm text-muted-foreground">Loan Amount</label>
-            <span className="font-bold text-lg">KES {loanAmount}</span>
+            <label className="text-sm">Loan Amount (KES)</label>
+            <span className="font-semibold">{loanAmount}</span>
           </div>
-          
-          <Slider
-            value={[loanAmount]}
-            min={500}
-            max={maxLoanAmount}
-            step={100}
+          <Slider 
+            value={[loanAmount]} 
+            min={500} 
+            max={maxLoanAmount} 
+            step={100} 
             onValueChange={(value) => setLoanAmount(value[0])}
-            className="mb-2"
+            className="mb-1"
           />
-          
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>KES 500</span>
             <span>KES {maxLoanAmount}</span>
           </div>
         </div>
         
-        {/* Loan Term Slider */}
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <label className="text-sm text-muted-foreground">Repayment Period</label>
-            <span className="font-medium">{loanTerm} days</span>
+            <label className="text-sm">Loan Term (Days)</label>
+            <span className="font-semibold">{loanTerm}</span>
           </div>
-          
-          <Slider
-            value={[loanTerm]}
-            min={7}
-            max={30}
-            step={7}
+          <Slider 
+            value={[loanTerm]} 
+            min={7} 
+            max={60} 
+            step={1} 
             onValueChange={(value) => setLoanTerm(value[0])}
-            className="mb-2"
+            className="mb-1"
           />
-          
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>7 days</span>
-            <span>30 days</span>
+            <span>60 days</span>
           </div>
         </div>
         
-        {/* Repayment Summary */}
-        <div className="bg-muted rounded-xl p-4 mb-4">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-sm">Loan Amount</span>
-            <span className="font-medium">KES {loanAmount}</span>
+        <div className="bg-muted p-4 rounded-lg mb-4">
+          <div className="flex justify-between mb-2">
+            <span className="text-sm">Interest Rate</span>
+            <span className="font-semibold">{interestRate.toFixed(1)}%</span>
           </div>
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-sm">Interest (5%)</span>
-            <span className="font-medium">KES {interestAmount}</span>
+          <div className="flex justify-between mb-2">
+            <span className="text-sm">Repayment Amount</span>
+            <span className="font-semibold">KES {calculateRepayment()}</span>
           </div>
-          <div className="flex justify-between items-center mb-3 pt-3 border-t border-border">
-            <span className="font-medium">Total Repayment</span>
-            <span className="font-semibold">KES {totalRepayment}</span>
-          </div>
-          <div className="flex justify-between items-center text-kazi-green">
-            <span className="text-sm">Weekly Payment</span>
-            <span className="font-medium">KES {weeklyPayment}</span>
+          <div className="flex justify-between">
+            <span className="text-sm">Due Date</span>
+            <span className="font-semibold">{new Date(Date.now() + (loanTerm * 24 * 60 * 60 * 1000)).toLocaleDateString()}</span>
           </div>
         </div>
         
-        <Button className="w-full kazi-button kazi-button-green">
+        <Button 
+          className="w-full kazi-button kazi-button-primary"
+          onClick={handleLoanApplication}
+          disabled={user?.trustScore ? user.trustScore < 30 : true}
+        >
           Apply for Loan
         </Button>
       </motion.div>
 
-      {/* Trust Score & Eligibility */}
+      {/* Loan History & Tips */}
       <motion.div 
-        className="grid grid-cols-2 gap-4 mb-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.1 }}
-      >
-        <div className="kazi-card bg-card flex flex-col items-center">
-          <p className="text-muted-foreground text-sm mb-2">Trust Score</p>
-          <TrustScoreMeter score={user?.trustScore || 72} size="md" />
-          <p className="text-xs text-center mt-2 text-muted-foreground">
-            Higher score = larger loans
-          </p>
-        </div>
-        
-        <div className="kazi-card bg-card">
-          <p className="text-muted-foreground text-sm mb-2">You're Eligible For</p>
-          <h3 className="text-2xl font-bold mb-1">KES {maxLoanAmount}</h3>
-          <div className="text-xs text-kazi-blue flex items-center">
-            <Shield size={12} className="mr-1" />
-            <span>Based on work history</span>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Trust Bonus Banner */}
-      <motion.div 
-        className="kazi-card bg-gradient-to-r from-kazi-blue to-blue-700 text-white mb-6"
+        className="space-y-4 mb-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.2 }}
       >
-        <div className="flex items-center">
-          <BadgeCheck size={24} className="mr-3" />
-          <div>
-            <h3 className="font-bold text-lg">Trust Score Bonus</h3>
-            <p className="text-white/80 text-sm">For your excellent work history</p>
+        <div className="kazi-card bg-card">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-10 h-10 rounded-full bg-kazi-green/10 flex items-center justify-center mr-3">
+                <CheckCircle size={20} className="text-kazi-green" />
+              </div>
+              <div>
+                <h3 className="font-semibold">Loan History</h3>
+                <p className="text-sm text-muted-foreground">View your past loans</p>
+              </div>
+            </div>
+            <Button variant="ghost" size="icon">
+              <ChevronRight size={18} />
+            </Button>
           </div>
         </div>
         
-        <div className="mt-4 bg-white/10 rounded-xl p-3">
-          <div className="flex justify-between items-center">
-            <span>Your bonus</span>
-            <span className="font-semibold">+KES {trustBonus}</span>
+        <div className="kazi-card bg-card">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-10 h-10 rounded-full bg-kazi-orange/10 flex items-center justify-center mr-3">
+                <Info size={20} className="text-kazi-orange" />
+              </div>
+              <div>
+                <h3 className="font-semibold">How Loans Work</h3>
+                <p className="text-sm text-muted-foreground">Learn about our loan terms</p>
+              </div>
+            </div>
+            <Button variant="ghost" size="icon">
+              <ChevronRight size={18} />
+            </Button>
           </div>
         </div>
       </motion.div>
 
-      {/* Loan History */}
+      {/* Loan Benefits */}
       <motion.div 
-        className="kazi-card bg-card mb-6"
+        className="kazi-card bg-gradient-to-br from-kazi-blue to-indigo-900 text-white mb-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.3 }}
       >
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="font-semibold">Loan History</h3>
-          <Button variant="ghost" size="sm" className="h-8 px-2">
-            <Calendar size={14} className="mr-1" />
-            View All
-          </Button>
-        </div>
+        <h3 className="font-semibold mb-4">KaziCredit Benefits</h3>
         
-        <div className="text-center py-6">
-          <Clock size={32} className="mx-auto text-muted-foreground mb-2" />
-          <p className="font-medium">No Previous Loans</p>
-          <p className="text-sm text-muted-foreground">Your loan history will appear here</p>
-        </div>
-      </motion.div>
-
-      {/* Quick Access Cards */}
-      <motion.div 
-        className="mb-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.4 }}
-      >
-        <h3 className="font-semibold mb-3">Quick Access</h3>
-        <div className="grid grid-cols-2 gap-3">
-          <div className="kazi-card bg-card">
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-500 mr-3">
-                <AlertCircle size={20} />
-              </div>
-              <div>
-                <h4 className="font-medium">Emergency Loan</h4>
-                <p className="text-xs text-muted-foreground">Instant processing</p>
-              </div>
+        <div className="space-y-3">
+          <div className="flex items-start">
+            <Shield size={18} className="mr-3 mt-0.5" />
+            <div>
+              <p className="font-medium">Trust-Based Approval</p>
+              <p className="text-sm text-white/80">No collateral needed, just work history</p>
             </div>
-            <Button variant="ghost" className="w-full mt-3 justify-between">
-              <span>Apply</span>
-              <ArrowRight size={16} />
-            </Button>
           </div>
           
-          <div className="kazi-card bg-card">
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-kazi-green mr-3">
-                <CreditCard size={20} />
-              </div>
-              <div>
-                <h4 className="font-medium">Business Loan</h4>
-                <p className="text-xs text-muted-foreground">For equipment</p>
-              </div>
+          <div className="flex items-start">
+            <Wallet size={18} className="mr-3 mt-0.5" />
+            <div>
+              <p className="font-medium">Instant Disbursement</p>
+              <p className="text-sm text-white/80">Money sent to M-Pesa in minutes</p>
             </div>
-            <Button variant="ghost" className="w-full mt-3 justify-between">
-              <span>Apply</span>
-              <ArrowRight size={16} />
-            </Button>
+          </div>
+          
+          <div className="flex items-start">
+            <Clock size={18} className="mr-3 mt-0.5" />
+            <div>
+              <p className="font-medium">Flexible Repayment</p>
+              <p className="text-sm text-white/80">Choose a timeline that works for you</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start">
+            <Award size={18} className="mr-3 mt-0.5" />
+            <div>
+              <p className="font-medium">Build Credit History</p>
+              <p className="text-sm text-white/80">Unlock larger loans with timely repayment</p>
+            </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Info Banner */}
-      <motion.div 
-        className="bg-muted rounded-xl p-4 text-sm"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.5 }}
-      >
-        <div className="flex items-start">
-          <Info size={16} className="text-muted-foreground mr-2 mt-0.5" />
-          <div>
-            <p className="mb-1">
-              <span className="font-medium">How KaziCredit works: </span> 
-              Your loan limit is based on your work history and trust score.
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <motion.div
+          className="fixed inset-0 flex items-center justify-center z-50 px-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div className="absolute inset-0 bg-black/50" onClick={() => setShowSuccessModal(false)}></div>
+          <motion.div 
+            className="bg-card rounded-xl p-6 max-w-md w-full shadow-xl relative z-10"
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+          >
+            <div className="mb-4 w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
+              <CheckCircle size={32} className="text-kazi-green" />
+            </div>
+            <h3 className="text-xl font-bold text-center mb-2">Application Successful!</h3>
+            <p className="text-center text-muted-foreground mb-4">
+              Your loan application for KES {loanAmount} is being processed. 
+              You'll receive an M-Pesa notification shortly.
             </p>
-            <p>Complete more jobs and increase your trust score to qualify for larger loans.</p>
+            <Button 
+              className="w-full kazi-button kazi-button-primary"
+              onClick={() => setShowSuccessModal(false)}
+            >
+              Got It
+            </Button>
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* Risk Warning */}
+      <div className="mb-4 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
+        <div className="flex items-start">
+          <AlertCircle size={18} className="text-amber-600 dark:text-amber-500 mr-2 mt-0.5" />
+          <div>
+            <p className="font-medium text-amber-800 dark:text-amber-400">Important Notice</p>
+            <p className="text-sm text-amber-700 dark:text-amber-500">
+              Late repayments affect your trust score and future loan eligibility. 
+              Borrow responsibly.
+            </p>
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

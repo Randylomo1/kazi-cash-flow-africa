@@ -1,15 +1,15 @@
 
 import { NavLink } from "react-router-dom";
-import { Home, Briefcase, Wallet, Medal, MoreHorizontal } from "lucide-react";
+import { Home, Briefcase, Wallet, Medal, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 
 const BottomNavigation = () => {
   const navItems = [
-    { to: "/", label: "Home", icon: Home },
+    { to: "/home", label: "Home", icon: Home },
     { to: "/jobs", label: "Jobs", icon: Briefcase },
     { to: "/wallet", label: "Wallet", icon: Wallet },
     { to: "/trust", label: "Trust", icon: Medal },
-    { to: "/credit", label: "Credit", icon: MoreHorizontal },
+    { to: "/settings", label: "Settings", icon: Settings },
   ];
 
   return (
@@ -24,13 +24,15 @@ const BottomNavigation = () => {
           key={item.to}
           to={item.to}
           className={({ isActive }) => 
-            `nav-item ${isActive ? "nav-item-active" : "text-muted-foreground"}`
+            `nav-item flex flex-col items-center justify-center h-full w-full ${
+              isActive ? "text-kazi-blue" : "text-muted-foreground"
+            }`
           }
         >
           {({ isActive }) => (
-            <>
+            <div className="relative flex flex-col items-center">
               <item.icon size={20} className={isActive ? "animate-scale-in" : ""} />
-              <span>{item.label}</span>
+              <span className="text-xs mt-1">{item.label}</span>
               {isActive && (
                 <motion.div 
                   layoutId="nav-indicator"
@@ -40,7 +42,7 @@ const BottomNavigation = () => {
                   transition={{ duration: 0.3 }}
                 />
               )}
-            </>
+            </div>
           )}
         </NavLink>
       ))}

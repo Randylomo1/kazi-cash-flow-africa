@@ -11,6 +11,9 @@ interface User {
   eligibleLoan: number;
   completedJobs: number;
   isVerified: boolean;
+  skills: string[];
+  location: string;
+  profileImage?: string;
 }
 
 interface AppContextType {
@@ -38,6 +41,8 @@ const mockUser: User = {
   eligibleLoan: 3500,
   completedJobs: 27,
   isVerified: true,
+  skills: ["Delivery", "Manual Labor", "Cleaning"],
+  location: "Nairobi, Kenya"
 };
 
 // Provider component
@@ -97,6 +102,13 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       setTimeout(() => {
         setUser(mockUser);
         localStorage.setItem("user", JSON.stringify(mockUser));
+        localStorage.setItem("hasVisitedKaziCash", "true");
+        
+        // Redirect to home page after login
+        if (window.location.pathname === '/login') {
+          window.location.href = '/home';
+        }
+        
         resolve();
       }, 1000);
     });
